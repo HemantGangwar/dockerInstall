@@ -1,0 +1,25 @@
+---
+- name: "|Docker| deployment on CentOS 7"
+  become: yes
+  hosts: all
+  tasks:
+  - name: "1. Pre-Requisite Package installation"
+    yum: 
+      name:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+      state: present
+  - name: "2. Adding required repository"
+    get_url:
+      url: https://download.docker.com/linux/centos/docker-ce.repo
+      dest: /etc/yum.repos.d/docker-ce.repo
+  - name: "3. Installing Docker Community edition"
+    yum:
+      name: docker-ce
+      state: present
+  - name: "4. Starting docker Service and setting for autostart"
+    service:
+      name: docker
+      state: restarted
+      enabled: true

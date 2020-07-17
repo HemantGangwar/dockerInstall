@@ -4,4 +4,6 @@
 
 ## Usage
 
-* 
+* #### #git clone https://github.com/HemantGangwar/dockerInstall.git
+* #### #cd dockerInstall
+* #### # ansible-playbook playbook/docker-setup.yml

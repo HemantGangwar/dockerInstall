@@ -23,3 +23,13 @@
       name: docker
       state: restarted
       enabled: true
+  - name: "5. Allow port for swarm communication and http/https communication"
+    firewalld:
+      port: "{{ item }}/tcp"
+      permanent: yes
+      immediate: yes
+      state: enabled
+    with_items:
+    - 2377
+    - 80
+    - 443

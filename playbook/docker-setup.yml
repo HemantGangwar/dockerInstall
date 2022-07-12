@@ -1,5 +1,5 @@
 ---
-- name: "|Docker| deployment on CentOS 7"
+- name: "|Docker| deployment on RHEL \ CentOS"
   become: yes
   hosts: all
   tasks:
@@ -21,9 +21,13 @@
   - name: "4. Starting docker Service and setting for autostart"
     service:
       name: docker
-      state: restarted
+      state: started
       enabled: true
-  - name: "5. Allow port for swarm communication and http/https communication"
+  - name: "5. Validating whether firewall is already running"
+    shell: systemctl is-active firewalld
+    register: firewall_status
+    ignore_errors: true
+  - name: "6. Allow port for swarm communication and http/https communication"
     firewalld:
       port: "{{ item }}/tcp"
       permanent: yes
@@ -33,3 +37,4 @@
     - 2377
     - 80
     - 443
+    when: firewall_status.rc == '0'
